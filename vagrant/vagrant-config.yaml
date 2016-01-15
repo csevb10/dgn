@@ -1,0 +1,46 @@
+---
+# TODO: Replace dgn2 with the correct name/path for your project.
+# Vagrant hostnames
+vagrant_hostname: "dev.dgn2.local"
+vagrant_aliases: ["www.dev.dgn2.local"]
+
+
+# Define the project sync folders.
+vagrant_synced_folders:
+  - local_path: "./files/dgn2"
+    destination: "/var/www/html/dgn2"
+    exclude_paths: [".git/", "docroot/sites/default/files/", ".idea/"]
+    id: dgn2
+    type: rsync
+
+# Memory and CPU for this VM.
+vagrant_memory: 2048
+vagrant_cpus: 2
+
+# Project specific settings.
+puppet_facts:
+  apache_hostname: "dev.dgn2.local"
+  apache_aliases: "www.dev.dgn2.local"
+  drupal_docroot: "/var/www/html/dgn2/docroot"
+  drupal_major_version: 7
+  drupal_mysql_user: "root"
+  drupal_mysql_password: "root"
+  drupal_mysql_database: "drupal"
+  drupal_private_files_path: "/mnt/sites/dgn2/files/private"
+  drupal_project_settings_path: "/var/www/html/dgn2/vagrant/settings.local.php"
+  memcache_memory: 32
+  mysql_max_allowed_packet: "32M"
+  php_display_errors: 1
+  php_display_startup_errors: 1
+  php_error_reporting: "E_ALL | E_STRICT"
+  php_html_errors: 0
+  php_log_errors: 1
+  php_max_input_vars: 1000
+  php_memory_limit: "256M"
+  php_post_max_size: "64M"
+  php_realpath_cache_size: "1024K"
+  php_upload_max_filesize: "64M"
+  varnish_autostart: "no"
+  varnish_memory: "64M"
+  varnish_port: 8080
+
