@@ -17,14 +17,15 @@ deployed_tag="$4"
 repo_url="$5"
 repo_type="$6"
 
-# If there is no username param, we're on Acquia, else, something else.
+# If there are no values, we're on Acquia, else, we will pass these values in.
 if [ -z "$7" ]; then username="Acquia Cloud"; else username="$7"; fi
 if [ -z "$8" ]; then channel="@csevb10"; else channel="$8"; fi
+if [ -z "$9" ]; then domain=`drush @$site.$env ac-domain-list | sed -e "s/.*:[[:blank:]]*//"`; else domain="$9"; fi
 
 # Load the Slack webhook URL (which is not stored in this repo).
 . $HOME/slack_settings
 
-echo $PWD
+environment="<a href=\"http://$domain\">$env</a>"
 
 # Post deployment notice to Slack
 curl \
@@ -33,5 +34,28 @@ curl \
   "payload={\"channel\": \"$channel\", \
   \"username\": \"$username\", \
   \"text\": \"A new deployment has been made to *$target_env* using tag *$deployed_tag*.\", \
-  \"icon_emoji\": \":information_source:\"}" \
+  \"icon_emoji\": \":information_source:\"}, \
+  \"attachments\": [ \
+    \"fields\": [ \
+      { \
+        \"title\": \"Site\", \
+        \"value\": \"$site\", \
+        \"short\": true \
+      },
+      {
+        \"title\": \"Environment\", \
+        \"value\": \"$environment", \
+        \"short\": true \
+      }, \
+      { \
+        \"title\": \"By\", \
+        \"value\": \"<person>\", \
+        \"short\": true \
+      },
+      {
+        \"title\": \"View Dashboard\", \
+        \"value\": \"link to dashboard\", \
+        \"short\": true \
+      }
+  ]" \
   $SLACK_WEBHOOK_URL
