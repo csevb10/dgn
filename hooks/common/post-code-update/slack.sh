@@ -23,7 +23,7 @@ if [ -z "$8" ]; then channel="@csevb10"; else channel="$8"; fi
 if [ -z "$9" ]; then domain=`drush @$site.$env ac-domain-list | sed -e "s/.*:[[:blank:]]*//"`; else domain="$9"; fi
 
 # Load the Slack webhook URL (which is not stored in this repo).
-. $HOME/slack_settings
+. $HOME/private/slack_settings
 
 environment="<a href=\"http://$domain\">$env</a>"
 
