@@ -22,7 +22,9 @@ if [ -z "$7" ]; then username="Acquia Cloud"; else username="$7"; fi
 if [ -z "$8" ]; then channel="@csevb10"; else channel="$8"; fi
 
 # Load the Slack webhook URL (which is not stored in this repo).
-. $HOME/slack_settings
+./slack_settings
+
+echo $PWD
 
 # Post deployment notice to Slack
 curl \

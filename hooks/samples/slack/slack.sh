@@ -19,10 +19,10 @@ repo_type="$6"
 
 # If there is no username param, we're on Acquia, else, something else.
 if [ -z "$7" ]; then username="Acquia Cloud"; else username="$7"; fi
-if [ -z "$8" ]; then channel=$1; else channel="$8"; fi
+if [ -z "$8" ]; then channel="@csevb10"; else channel="$8"; fi
 
 # Load the Slack webhook URL (which is not stored in this repo).
-./slack_settings
+. $HOME/slack_settings
 
 # Post deployment notice to Slack
 curl \
