@@ -44,7 +44,7 @@ curl \
       },
       {
         \"title\": \"Environment\", \
-        \"value\": \"$environment", \
+        \"value\": \"$environment\", \
         \"short\": true \
       }, \
       { \
