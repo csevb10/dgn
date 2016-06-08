@@ -25,20 +25,21 @@ if [ -z "$9" ]; then domain=`drush @$site.$env status | perl -F'/[\s:]+/' -lane 
 # Load the Slack webhook URL (which is not stored in this repo).
 . $HOME/private/slack_settings
 
-environment="<a href=\"http://$domain\">$env</a>"
+environment="<a href=\\\"http://$domain\\\">$env</a>"
 
-echo   "payload={\"channel\": \"$channel\", \
+echo "payload={ \
+  \"channel\": \"$channel\", \
   \"username\": \"$username\", \
   \"text\": \"A new deployment has been made to *$target_env* using tag *$deployed_tag*.\", \
-  \"icon_emoji\": \":information_source:\"}, \
-  \"attachments\": [ \
+  \"icon_emoji\": \":information_source:\", \
+  \"attachments\": [{ \
     \"fields\": [ \
       { \
         \"title\": \"Site\", \
         \"value\": \"$site\", \
         \"short\": true \
-      },
-      {
+      }, \
+      { \
         \"title\": \"Environment\", \
         \"value\": \"$environment\", \
         \"short\": true \
@@ -47,43 +48,48 @@ echo   "payload={\"channel\": \"$channel\", \
         \"title\": \"By\", \
         \"value\": \"<person>\", \
         \"short\": true \
-      },
+      },\
       { \
         \"title\": \"View Dashboard\", \
         \"value\": \"link to dashboard\", \
         \"short\": true \
       } \
-  ]"
+    ] \
+  }] \
+}"
 
 # Post deployment notice to Slack
 curl \
   -X POST \
   --data-urlencode \
-  "payload={\"channel\": \"$channel\", \
-  \"username\": \"$username\", \
-  \"text\": \"A new deployment has been made to *$target_env* using tag *$deployed_tag*.\", \
-  \"icon_emoji\": \":information_source:\"}, \
-  \"attachments\": [ \
-    \"fields\": [ \
-      { \
-        \"title\": \"Site\", \
-        \"value\": \"$site\", \
-        \"short\": true \
-      },
-      {
-        \"title\": \"Environment\", \
-        \"value\": \"$environment\", \
-        \"short\": true \
-      }, \
-      { \
-        \"title\": \"By\", \
-        \"value\": \"<person>\", \
-        \"short\": true \
-      }, \
-      { \
-        \"title\": \"View Dashboard\", \
-        \"value\": \"link to dashboard\", \
-        \"short\": true \
-      } \
-  ]" \
+  "payload={ \
+    \"channel\": \"$channel\", \
+    \"username\": \"$username\", \
+    \"text\": \"A new deployment has been made to *$target_env* using tag *$deployed_tag*.\", \
+    \"icon_emoji\": \":information_source:\", \
+    \"attachments\": [{ \
+      \"fields\": [ \
+        { \
+          \"title\": \"Site\", \
+          \"value\": \"$site\", \
+          \"short\": true \
+        }, \
+        { \
+          \"title\": \"Environment\", \
+          \"value\": \"$environment\", \
+          \"short\": true \
+        }, \
+        { \
+          \"title\": \"By\", \
+          \"value\": \"<person>\", \
+          \"short\": true \
+        }, \
+        { \
+          \"title\": \"View Dashboard\", \
+          \"value\": \"link to dashboard\", \
+          \"short\": true \
+        } \
+      ] \
+    }] \
+  }" \
   $SLACK_WEBHOOK_URL
