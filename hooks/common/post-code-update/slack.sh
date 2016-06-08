@@ -25,7 +25,7 @@ if [ -z "$9" ]; then domain=`drush @$site.$env status | perl -F'/[\s:]+/' -lane 
 # Load the Slack webhook URL (which is not stored in this repo).
 . $HOME/private/slack_settings
 
-environment="<http://$domain|$env</a>"
+environment="<http://$domain|$env>"
 
 echo "payload={ \
   \"channel\": \"$channel\", \
