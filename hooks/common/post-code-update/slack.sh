@@ -20,9 +20,10 @@ repo_type="$6"
 # If there are no values, we're on Acquia, else, we will pass these values in.
 if [ -z "$7" ]; then username="Acquia Cloud"; else username="$7"; fi
 if [ -z "$8" ]; then channel="@csevb10"; else channel="$8"; fi
-if [ -z "$9" ]; then domain=`drush @$site.$env ac-domain-list | sed -e "s/.*:[[:blank:]]*//"`; else domain="$9"; fi
+if [ -z "$9" ]; then domain=`drush @$site.$env ac-domain-list --email=$EMAIL --key=$KEY | sed -e "s/.*:[[:blank:]]*//"`; else domain="$9"; fi
 
 # Load the Slack webhook URL (which is not stored in this repo).
+. $HOME/private/acquia_settings
 . $HOME/private/slack_settings
 
 environment="<a href=\"http://$domain\">$env</a>"
