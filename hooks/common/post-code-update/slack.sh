@@ -21,42 +21,13 @@ repo_type="$6"
 if [ -z "$7" ]; then username="Acquia Cloud"; else username="$7"; fi
 if [ -z "$8" ]; then channel="@csevb10"; else channel="$8"; fi
 if [ -z "$9" ]; then domain=`drush @$site.$env status | perl -F'/[\s:]+/' -lane '/Site URI/ && print $F[3]'`; else domain="$9"; fi
+if [ -z "$10" ]; then dashboard="https://insight.acquia.com/site-list"; else dashboard="$10"; fi
+
 
 # Load the Slack webhook URL (which is not stored in this repo).
 . $HOME/private/slack_settings
 
 environment="<http://$domain|$env>"
-
-echo "payload={ \
-  \"channel\": \"$channel\", \
-  \"username\": \"$username\", \
-  \"text\": \"A new deployment has been made to *$target_env* using tag *$deployed_tag*.\", \
-  \"icon_emoji\": \":information_source:\", \
-  \"attachments\": [{ \
-    \"fields\": [ \
-      { \
-        \"title\": \"Site\", \
-        \"value\": \"$site\", \
-        \"short\": true \
-      }, \
-      { \
-        \"title\": \"Environment\", \
-        \"value\": \"$environment\", \
-        \"short\": true \
-      }, \
-      { \
-        \"title\": \"By\", \
-        \"value\": \"<person>\", \
-        \"short\": true \
-      },\
-      { \
-        \"title\": \"View Dashboard\", \
-        \"value\": \"link to dashboard\", \
-        \"short\": true \
-      } \
-    ] \
-  }] \
-}"
 
 # Post deployment notice to Slack
 curl \
@@ -80,13 +51,8 @@ curl \
           \"short\": true \
         }, \
         { \
-          \"title\": \"By\", \
-          \"value\": \"<person>\", \
-          \"short\": true \
-        }, \
-        { \
           \"title\": \"View Dashboard\", \
-          \"value\": \"link to dashboard\", \
+          \"value\": \"<$dashboard|Dashboard>\", \
           \"short\": true \
         } \
       ] \
