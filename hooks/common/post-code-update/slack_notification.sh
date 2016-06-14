@@ -1,4 +1,5 @@
 #!/usr/bin/env php
 <?php
 
-include_once "../../libraries/slack_notification.php";
+print getcwd() . "\n";
+include_once "../../libraries/slack/slack_notification.php";

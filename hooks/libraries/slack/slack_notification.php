@@ -5,10 +5,10 @@
  */
 
 if (isset($_ENV['PANTHEON_ENVIRONMENT'])) {
-  include_once "./pantheon_slack_notification.php";
+  include_once "pantheon_slack_notification.php";
 }
 else {
-  include_once "./acquia_slack_notification.php";
+  include_once "acquia_slack_notification.php";
 }
 
 $color  = isset($defaults['color']) ? $defaults['color'] : '#EFD01B';
