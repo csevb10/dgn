@@ -12,7 +12,7 @@ else {
 }
 
 $color  = isset($defaults['color']) ? $defaults['color'] : '#EFD01B';
-$url    = isset($defaults['url']) ? $defaults['url'] : `drush @$site.$env status | perl -F'/[\s:]+/' -lane '/Site URI/ && print $F[3]'`;
+$url    = isset($defaults['url']) ? $defaults['url'] : `echo drush @$site.$env status | perl -F'/[\s:]+/' -lane '/Site URI/ && print $F[3]'`;
 $icon   = isset($defaults['icon']) ? $defaults['icon'] : ':lightning_cloud:';
 $type   = isset($type) ? $type : 'deploy';
 
@@ -62,7 +62,6 @@ switch($type) {
     // https://api.slack.com/incoming-webhooks
     $text = 'Deploy to the '. $environment;
     $text .= ' environment of '. $site . ' complete!';
-    $text .= '<' . $defaults['dashboard'] . '|View Dashboard>';
     // $text .= "\n\n*DEPLOY MESSAGE*: $deploy_message";
     // Build an array of fields to be rendered with Slack Attachments as a table
     // attachment-style formatting:
