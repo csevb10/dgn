@@ -2,4 +2,5 @@
 <?php
 
 print getcwd() . "\n";
-include_once "../../libraries/slack/slack_notification.php";
+print __DIR__ . "\n";
+require_once __DIR__ "../../libraries/slack/slack_notification.php";
