@@ -19,6 +19,5 @@ $defaults = array(
   'dashboard' => 'https://dashboard.pantheon.io/sites/'. $site .'#'. $environment .'/deploys',
   'color' => '#EFD01B',
   'email' => $_POST['user_email'],
+  'url' => 'http://' . $environment . '-' . $site . '.pantheonsite.io',
 );
-
-$url = 'http://' . $environment . '-' . $site . '.pantheonsite.io';
