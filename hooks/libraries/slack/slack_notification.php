@@ -12,7 +12,7 @@ else {
 }
 
 $color  = isset($defaults['color']) ? $defaults['color'] : '#EFD01B';
-$url    = isset($defaults['url']) ? $defaults['url'] : `drush @$site.$environment status | perl -F'/[\s:]+/' -lane '/Site URI/ && print $F[3]'`;
+$url    = isset($defaults['url']) ? $defaults['url'] : `drush @$site.$environment status | perl -F'/[\s:]+/' -lane '/Site URI/ && print \$F[3]'`;
 $icon   = isset($defaults['icon']) ? $defaults['icon'] : ':lightning_cloud:';
 $type   = isset($type) ? $type : 'deploy';
 
