@@ -1,0 +1,58 @@
+language: php
+php:
+  - 5.6
+
+env:
+  global:
+    # Provider should be "pantheon" or "acquia"
+    - PROVIDER="pantheon"
+    - secure: X8dwKmT/iLn2xeehGU76IgKqLmf3kaSmG3Xme9SjkWZpM/KeJIugxeaTFQQkmgBMvbBqkKUcMfEP2/6aNzRTxGaSs6Fuj14T3Vj2W2zp6YAkmBm9KhxOEPTsKtSNqAfw9ZQHX2syaLe++bSpEDPlIGOQ6wUAtoVub6A+xcGiMr/QHyIpx1l8iivZMmzudXbKj6onz6fa3yPM6DDzBn2U1TD7g+IuuEERFr62LrbkxbDcya+X8pjThhMNixt/u3xeRDU/bldA0irZyTMCaZl3lUVhyUJLMdav6ORO5HR2l8917WVqd9eD81KnVHqm/zPSU+85q7Ix2IBNoZHtngl+ni58f8F1H/tEgScF4ROOWObS0GwmhWFvGyfPokpeZnR8c+wmATLJ8H1Qgx+kv9aAN0GQlVJROkiRSN0D2wXQLo0EAmxPSLbuEkweSKoZPPe9BUcXHShF1XlUkHe8INtDvl4Z1HuFyUJZwuEXHMXH86cndd03yxsJTvX/coXWcvqHwCY3TsHWtWqunSLdcazPHGU2ch5giepvM/4HNzxYSimxBrZjKSEgsMi+QlHFTXkhYOSbdX+mc3NxuFsoXbYBcVqVXGnr+Q0/LgtPVInjhpMlIXwOki5uQAjks57gJJf66cV01KTpHLcZnrHgBoxFmWPCeQOyHOY+w1U33xXiUnE=
+
+before_install:
+  - SCRIPTPATH="private/hooks/libraries/ci/$PROVIDER";
+  - $SCRIPTPATH/set-directory.sh
+  - openssl aes-256-cbc -K $encrypted_b7ec65ae1a29_key -iv $encrypted_b7ec65ae1a29_iv
+    -in travisci_id_rsa.enc -out travisci_id_rsa -d
+  - chmod 600 travisci_id_rsa
+  - mv travisci_id_rsa ~/.ssh/id_rsa
+  - composer self-update
+  - export BASEDIR=${PWD}
+
+
+install:
+  - phpenv rehash
+  - composer install
+  - composer global require drush/drush:8.1.2
+  - $SCRIPTPATH/install-dependencies.sh
+  - composer global require behat/behat:3.*
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - mysql -e 'create database drupal;'
+
+before_script:
+  # This ensures that our terminus login won't hang on prompt.
+  - echo "StrictHostKeyChecking no" > ~/.ssh/config
+  - echo "sendmail_path='true'" >> `php --ini | grep "Loaded Configuration" | awk '{print $4}'`
+
+  # Add our pantheon repo as an endpoint for pushes.
+  - git remote add paas $PGIT
+
+  - $SCRIPTPATH/pull-db.sh
+
+  # Load our downloaded DB.
+  - drush si --db-url=mysql://root@localhost/drupal -v -y
+  - mysql -uroot drupal < db.sql
+
+  # Run a webserver.
+  - drush runserver 8080 - </dev/null &>$HOME/server.log &
+  - cd ..
+  - until cat $HOME/server.log | grep '8080'; do sleep 0.2; done
+
+script:
+  - cd $BASEDIR
+  - behat
+
+  - if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PULL_REQUEST == 'false' ]; then
+      git fetch paas &&
+      git merge -m "Merge changes to provider from github" paas/master &&
+      git push paas HEAD:master;
+    fi
