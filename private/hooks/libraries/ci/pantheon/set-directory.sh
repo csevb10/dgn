@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-export BASEDIR=${PWD}
+BASEDIR=${PWD}
