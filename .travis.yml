@@ -26,13 +26,15 @@ before_install:
   - chmod 600 travisci_id_rsa
   - mv travisci_id_rsa ~/.ssh/id_rsa
 
+  # This ensures that our ssh/terminus login won't hang on prompt.
+  - echo "StrictHostKeyChecking no" > ~/.ssh/config
+
   # Define script path and our Drupal root.
   - SCRIPTPATH="${PWD}/private/hooks/libraries/ci/$PROVIDER";
   - export BASEDIR="${PWD}$BASEPATH"
   - cd $BASEDIR
   - echo ${PWD}
   - composer self-update
-
 
 install:
   - cd $BASEDIR
@@ -47,8 +49,6 @@ install:
 
 before_script:
   - cd $BASEDIR
-  # This ensures that our terminus login won't hang on prompt.
-  - echo "StrictHostKeyChecking no" > ~/.ssh/config
   - echo "sendmail_path='true'" >> `php --ini | grep "Loaded Configuration" | awk '{print $4}'`
 
   # Add our paas repo as an endpoint for pushes.
