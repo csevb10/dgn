@@ -33,6 +33,7 @@ before_install:
 install:
   - cd $BASEDIR
   - phpenv rehash
+  - composer update
   - composer install
   - composer global require drush/drush:8.1.2
   - $SCRIPTPATH/install-dependencies.sh
