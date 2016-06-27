@@ -22,8 +22,9 @@ before_install:
 
   # Define script path and our Drupal root.
   - SCRIPTPATH="${PWD}/private/hooks/libraries/ci/$PROVIDER";
-  - echo ${PWD}
+  - BASEPATH="";
   - $SCRIPTPATH/set-directory.sh
+  - export BASEDIR="${PWD}$BASEPATH"
   - cd $BASEDIR
   - echo ${PWD}
   - composer self-update
