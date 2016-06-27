@@ -17,7 +17,7 @@ before_install:
   # .travis.yml file.
   - openssl aes-256-cbc -K $encrypted_9b4e19b001bc_key -iv $encrypted_9b4e19b001bc_iv
     -in travisci_id_rsa.enc -out travisci_id_rsa -d
-  - SCRIPTPATH= "${PWD}/private/hooks/libraries/ci/$PROVIDER";
+  - SCRIPTPATH="${PWD}/private/hooks/libraries/ci/$PROVIDER";
   - echo $SCRIPTPATH
   - echo ${PWD}
   - $SCRIPTPATH/set-directory.sh
