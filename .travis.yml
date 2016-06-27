@@ -36,13 +36,13 @@ before_install:
 
 install:
   - cd $BASEDIR
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - phpenv rehash
   - composer update
   - composer install
   - composer global require drush/drush:8.1.2
   - $SCRIPTPATH/install-dependencies.sh
   - composer global require behat/behat:3.*
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - mysql -e 'create database drupal;'
 
 before_script:
