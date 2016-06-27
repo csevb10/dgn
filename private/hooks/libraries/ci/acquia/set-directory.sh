@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-BASEPATH="/docroot"
+export BASEPATH="/docroot"
