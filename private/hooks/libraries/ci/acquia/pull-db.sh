@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Authenticate to Acquia and pull our DB from Acquia.
-drush
-drush acquia-update
-drush @$PAASSITE.$PAASENV sql-dump > db.sql
+ssh $PAASSITE@$PAASENV@$PAASURL
+drush sql-dump $PAASITE@$PAASENV > db.sql
+exit
+scp $PAASSITE@$PAASENV@$PAASURL:db.sql db.sql
