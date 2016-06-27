@@ -512,7 +512,7 @@ class UrlTest extends UnitTestCase {
     $route_match = new RouteMatch('test_route', $route, ['foo' => (object) [1]], ['foo' => 1]);
     $url = Url::fromRouteMatch($route_match);
     $this->assertSame('test_route', $url->getRouteName());
-    $this->assertEquals(['foo' => '1'] , $url->getRouteParameters());
+    $this->assertEquals(['foo' => '1'], $url->getRouteParameters());
   }
 
   /**
@@ -749,6 +749,16 @@ class UrlTest extends UnitTestCase {
   }
 
   /**
+   * Tests the fromUri() method with a base: URI starting with a number.
+   *
+   * @covers ::fromUri
+   */
+  public function testFromUriNumber() {
+    $url = Url::fromUri('base:2015/10/06');
+    $this->assertSame($url->toUriString(), 'base:/2015/10/06');
+  }
+
+  /**
    * Tests the toUriString() method with route: URIs.
    *
    * @covers ::toUriString
@@ -824,6 +834,5 @@ class TestUrl extends Url {
   public function setAccessManager(AccessManagerInterface $access_manager) {
     $this->accessManager = $access_manager;
   }
-
 
 }
