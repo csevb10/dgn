@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-drush
-drush ac-api-login --email=$EMAIL --key=$ACQUIAKEY
+ssh $PAASSITE@$PAASENV@$PAASURL
+drush sql-dump $PAASITE@$PAASENV > db.sql
+exit
+scp $PAASSITE@$PAASENV@$PAASURL:db.sql db.sql
