@@ -34,15 +34,15 @@ before_install:
   - export BASEDIR="${PWD}$BASEPATH"
   - cd $BASEDIR
   - echo ${PWD}
-  # - composer self-update
+  - composer self-update
 
 install:
   - cd $BASEDIR
-  # - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  # - phpenv rehash
-  # - composer update
-  # - composer install
-  # - composer global require drush/drush:8.1.2
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - phpenv rehash
+  - composer update
+  - composer install
+  - composer global require drush/drush:8.1.2
   - $SCRIPTPATH/install-dependencies.sh
   - composer global require behat/behat:3.*
   - mysql -e 'create database drupal;'
